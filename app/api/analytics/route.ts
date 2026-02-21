@@ -41,13 +41,17 @@ export async function GET() {
     const barakaScore = Math.round((prayerRate * 0.6 + taskRate * 0.4) * 100);
 
     // Find peak focus time (which prayer block has most completed tasks)
-    const peakBlock = tasksByBlock.sort((a, b) => b._count - a._count)[0];
+    const peakBlock = tasksByBlock.sort(
+      (a: { _count: number }, b: { _count: number }) => b._count - a._count
+    )[0];
 
     // Focus by prayer data
-    const focusByPrayer = tasksByBlock.map((t) => ({
-      block: t.prayerBlock,
-      count: t._count,
-    }));
+    const focusByPrayer = tasksByBlock.map(
+      (t: { prayerBlock: string; _count: number }) => ({
+        block: t.prayerBlock,
+        count: t._count,
+      })
+    );
 
     return NextResponse.json({
       barakaScore,
